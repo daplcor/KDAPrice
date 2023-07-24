@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 // Use your own channelId
-const channelId = '1133046453661601887';
+const channelId = process.env.CHANNEL_ID;
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, c => {
