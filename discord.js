@@ -5,17 +5,17 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 // Use your own channelId
-const channelId = '';
+const channelId = '1133046453661601887';
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-// Only necessary to connect to the mongo or other data streamer
-// client.on('ready', async () => {
-// 	await connect();
-// });
+// Only necessary to connect to mongo or other data streamer
+client.on('ready', async () => {
+	await connect();
+});
 
 client.commands = new Collection();
 
@@ -65,22 +65,22 @@ client.on(Events.InteractionCreate, async interaction => {
 
 // Example code to connect to MongoDB and stream events to specific channels
 // I recommend using whatever streamer or method is easiest for your needs
-// const uri = process.env.MONGODB_CONNECTION_STRING;
-// const mongoCon = new MongoClient(uri);
+const uri = process.env.MONGODB_CONNECTION_STRING;
+const mongoCon = new MongoClient(uri);
 
-// async function connect() {
-//   await mongoCon.connect();
-//   const channel = client.channels.cache.get(channelId);
+async function connect() {
+  await mongoCon.connect();
+  const channel = client.channels.cache.get(channelId);
 
-//   const coll = mongoCon.db('dao').collection('dtest');
+  const coll = mongoCon.db('dao').collection('dtest');
 
-//   const changeStream = coll.watch();
-//   console.log("from mongo.js");
+  const changeStream = coll.watch();
+  console.log("from mongo.js");
 
-//   changeStream.on('change', async change => {
-//     console.log(change.fullDocument.message);
-//     // Emit event with change 
-// 	// If operationType: 'insert', 'update' or 'delete' 
-// 	channel.send(change.fullDocument.message)
-//   });
-// } 
+  changeStream.on('change', async change => {
+    console.log(change.fullDocument.message);
+    // Emit event with change 
+	// If operationType: 'insert', 'update' or 'delete' 
+	channel.send(change.fullDocument.message)
+  });
+} 
