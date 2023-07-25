@@ -73,7 +73,7 @@ async function connect() {
   await mongoCon.connect();
   const channel = client.channels.cache.get(channelId);
 
-  const coll = mongoCon.db('dao').collection('dtest');
+  const coll = mongoCon.db('dao').collection('swarmsmessages');
 
   const changeStream = coll.watch();
   console.log("from mongo.js");
