@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // Use your own channelId
 const channelId = process.env.CHANNEL_ID;
-const channelIds = process.env.CHANNEL_IDS;
+const channelIds = process.env.CHANNEL_IDS.split(",");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, c => {
