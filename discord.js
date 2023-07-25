@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // Use your own channelId
 const channelId = process.env.CHANNEL_ID;
-const channelIds = process.env.CHANNEL_IDS.split(",");
+// const channelIds = process.env.CHANNEL_IDS.split(",");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once(Events.ClientReady, c => {
@@ -69,47 +69,48 @@ client.on(Events.InteractionCreate, async interaction => {
 const uri = process.env.MONGODB_CONNECTION_STRING;
 const mongoCon = new MongoClient(uri);
 
-// async function connect() {
-//   await mongoCon.connect();
-//   const channel = client.channels.cache.get(channelId);
-
-//   const coll = mongoCon.db('dao').collection('dtest');
-
-//   const changeStream = coll.watch();
-//   console.log("from mongo.js");
-
-//   changeStream.on('change', async change => {
-//     console.log(change.fullDocument.message);
-//     // Emit event with change 
-// 	// If operationType: 'insert', 'update' or 'delete' 
-// 	channel.send(change.fullDocument.message)
-//   });
-// } 
 async function connect() {
-	await mongoCon.connect();
+  await mongoCon.connect();
+  const channel = client.channels.cache.get(channelId);
+
+  const coll = mongoCon.db('dao').collection('dtest');
+
+  const changeStream = coll.watch();
+  console.log("from mongo.js");
+
+  changeStream.on('change', async change => {
+    console.log(change.fullDocument.message);
+    // Emit event with change 
+	// If operationType: 'insert', 'update' or 'delete' 
+	channel.send(change.fullDocument.message)
+  });
+} 
+
+// async function connect() {
+// 	await mongoCon.connect();
   
-	const coll = mongoCon.db('dao').collection('dtest');
-	const changeStream = coll.watch();
+// 	const coll = mongoCon.db('dao').collection('dtest');
+// 	const changeStream = coll.watch();
   
-	console.log("from mongo.js");
+// 	console.log("from mongo.js");
   
-	changeStream.on('change', async change => {
-	  console.log(change.fullDocument.message);
+// 	changeStream.on('change', async change => {
+// 	  console.log(change.fullDocument.message);
   
-	  // Loop over all channel IDs
-	  for (const channelId of channelIds) {
-		// Get the channel by its ID
-		const channel = client.channels.cache.get(channelId);
+// 	  // Loop over all channel IDs
+// 	  for (const channelId of channelIds) {
+// 		// Get the channel by its ID
+// 		const channel = client.channels.cache.get(channelId);
   
-		// Check if the channel exists
-		if (!channel) {
-		  console.error(`Channel with ID ${channelId} does not exist`);
-		  continue;
-		}
+// 		// Check if the channel exists
+// 		if (!channel) {
+// 		  console.error(`Channel with ID ${channelId} does not exist`);
+// 		  continue;
+// 		}
   
-		// If operationType: 'insert', 'update' or 'delete' 
-		channel.send(change.fullDocument.message);
-	  }
-	});
-  }
+// 		// If operationType: 'insert', 'update' or 'delete' 
+// 		channel.send(change.fullDocument.message);
+// 	  }
+// 	});
+//   }
   
