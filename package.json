@@ -4,15 +4,20 @@
   "description": "Leverages API data to provide crypto prices to discord users.",
   "main": "discord.js",
   "dependencies": {
-    "axios": "^1.4.0",
+    "@walletconnect/core": "^2.15.1",
+    "@walletconnect/sign-client": "^2.15.1",
+    "axios": "^1.7.5",
     "chalk": "^5.3.0",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
-    "mongodb": "^5.7.0",
-    "next": "^13.3.0",
+    "lokijs": "^1.5.12",
+    "mongodb": "^6.8.0",
+    "next": "^14.2.7",
     "node-fetch": "^3.3.1",
     "pact-lang-api": "^4.3.6",
-    "redis": "^4.6.7"
+    "qrcode": "^1.5.3",
+    "redis": "^4.6.7",
+    "uuid": "^10.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

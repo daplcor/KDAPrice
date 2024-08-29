@@ -7,13 +7,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 	  .setName('daovote')
 	  .setDescription('Choose your Proposal'),
-  
+	
 	async execute(interaction) {
 	  try {
 		 votes = await getPendingVotes();
-  
+		const currentDate = new Date();
 		 const options = votes
-			.filter(v => !v.proposition.proposal_completed && v.proposition.proposal_title !== undefined)
+			.filter(v => !v.proposition.proposal_completed && new Date(v.proposition.proposal_end_time.timep) > currentDate && v.proposition.proposal_title !== undefined)
 			.map(v => ({
 			  label: v.proposition.proposal_title,
 			  value: v.proposition.proposal_title 

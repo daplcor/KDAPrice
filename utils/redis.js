@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const host = process.env.REDIS_HOST;
 const port = process.env.REDIS_PORT;
-console.log(host, port);
+// console.log(host, port);
 // If you use Redis, please configure the following:
 const redisClient = redis.createClient({
     username: 'default',
@@ -13,7 +13,10 @@ const redisClient = redis.createClient({
         port: port,
     }
   });
-
+  redisClient.on('error', (err) => {
+    console.error('Redis Error:', err);
+  });
+  
   redisClient.connect();
 
 module.exports = {redisClient};
